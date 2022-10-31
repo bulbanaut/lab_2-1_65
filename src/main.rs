@@ -9,6 +9,8 @@ x^2 + (kx + b)^2 = r^2 замена у
 x^2 + (kx)^2 + 2kxb + b^2 - r^2 = 0 раскрытие скобок
 d = (2kb)^2 - 4*(k^2+1)*(b^2 - r^2) дискриминант
 d = b^2     - 4*   a   *    c
+!какая-то беда с k, 
+TODO: починить
 */
 
 fn main() {
@@ -21,36 +23,35 @@ fn main() {
     let x2 = (-(2.0*k*b).powi(2) - d.sqrt()) / 2.0 * (k.powi(2) + 1.0);
     let y1 = k*x1 + b;
     let y2 = k*x2 + b;
-    let p1: [f64; 2] = [x1, y1];
-    let p2: [f64; 2] = [x2, y2];
-    println!("{:?}, {:?}", p1, p2 );
 
-    if f64::is_nan(x1) {
+    if d < 0.0 {
         println!("Общих точек нет");
-    }
-    if x1 - x2 == 0.0 && y1 - y2 == 0.0 {
+    } else if d == 0.0{
         println!("Прямая - касательна");
-    }
+        println!("Точка: {}, {}", x1, y1 );
 
-    let quarter = quarter_match(x1, y1);
-    println!("Точка 1 находится в четрверти {quarter}");
+        quarter_match(x1, y1, 1);
+    } else {
+        println!("Точка 1: {}, {}", x1, y1);
+        println!("Точка 2: {}, {}", x2, y2);
+
+        quarter_match(x1, y1, 1);
     
-    let quarter = quarter_match(x2, y2);
-    println!("Точка 2 находится в четрверти {quarter}");
+        quarter_match(x2, y2, 2);
+    }
 }
 
-fn quarter_match(x:f64, y:f64) -> u8 {
+fn quarter_match(x:f64, y:f64, n:u8) {
     if x > 0.0 && y > 0.0 {
-        return 1;
+        println!("Точка {n} находится в четрверти 1");
     } else if x > 0.0 && y < 0.0 {
-        return 2;
+        println!("Точка {n} находится в четрверти 2");
     } else if x < 0.0 && y < 0.0 {
-        return 3;
+        println!("Точка {n} находится в четрверти 3");
     } else if x < 0.0 && y < 0.0 {
-        return 4;
+        println!("Точка {n} находится в четрверти 4");
     } else {
-        println!("Точка на границе четвертей");
-        return 0;
+        println!("Точка {n} находится на границе четвертей");
     }
 }
 
